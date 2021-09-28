@@ -39,6 +39,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.cbAutoCopyToAll = new System.Windows.Forms.CheckBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -151,13 +152,26 @@
             this.cbAutoCopyToAll.Text = "Automatically copy entered text to all other languages";
             this.cbAutoCopyToAll.UseVisualStyleBackColor = true;
             // 
+            // label6
+            // 
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.142858F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.Red;
+            this.label6.Location = new System.Drawing.Point(239, 202);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(781, 85);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "WARNING: \r\nThis function is only intended to initially fill all languages when cr" +
+    "eating a new file. Do NOT use with any files that already contain translations!!" +
+    "!";
+            // 
             // OptionsDlg
             // 
             this.AcceptButton = this.bOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.bCancel;
-            this.ClientSize = new System.Drawing.Size(1236, 255);
+            this.ClientSize = new System.Drawing.Size(1236, 291);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.cbAutoCopyToAll);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -195,5 +209,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox cbAutoCopyToAll;
+        private System.Windows.Forms.Label label6;
     }
 }

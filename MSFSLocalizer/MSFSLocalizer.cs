@@ -20,6 +20,7 @@ namespace MSFSLocalizer
     {
         private Config config;
         private LocalizationFile locFile;
+        private bool inhibitCopyToAll = false;
         private bool isDirty = false;
         private bool flashDirty = false;
         private List<string> Languages;
@@ -38,6 +39,7 @@ namespace MSFSLocalizer
         {
             if (!string.IsNullOrEmpty(config.LastProject))
                 LoadJson(config.LastProject);
+            CheckForTranslations();
             BuildGlobals();
             BuildTree();
             BuildRecentProjectList();
@@ -213,16 +215,50 @@ namespace MSFSLocalizer
             }
         }
 
+        private void CheckForTranslations()
+        {
+            if (!config.AutoCopyToAll)
+                return;
+
+            bool translated = false;
+            foreach (LocalizationString ls in locFile.Strings)
+            {
+                List<string> languages = new List<string>();
+                foreach(LocalizationContent lc in ls.Content)
+                {
+                    if (languages.Count > 0)
+                    {
+                        foreach (string lang in languages)
+                        {
+                            if (lang != lc.Content)
+                            {
+                                translated = true;
+                                break;
+                            }
+                            languages.Add(lc.Content);
+                        }
+                    }
+                    else
+                        languages.Add(lc.Content);
+                    if (translated)
+                        break;
+                }
+                if (translated)
+                    break;
+            }
+
+            if (translated)
+            {
+                config.AutoCopyToAll = false;
+                MessageBox.Show("String translations have been found in the current file. Automatic copying to other languages has been disabled.", "Copy to all languages", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
         private bool SaveJson()
         {
             string CR = Environment.NewLine;
             try
             {
-                //var coll = new List<LocalizationFile>();
-                //var collWrapper = new { LocalisationFile = locFile };
-
-                //string json = JsonConvert.SerializeObject(collWrapper, Formatting.Indented);
-
                 string json = "{ " + CR + "\"LocalisationFile\": { " + CR;
                 json += Prop("Version") + Q(locFile.Version) + "," + CR;
                 json += Prop("UUID") + Q(locFile.UUID) + "," + CR;
@@ -355,11 +391,13 @@ namespace MSFSLocalizer
             else
                 dtpModDate.Value = DateTime.Now;
             cbxStatus.Text = ls.LocalizationStatus;
+            inhibitCopyToAll = true;
             foreach (LocalizationContent lc in ls.Content)
             {
                 if (lc.Language == cbxLanguage.Text)
                     tbContent.Text = lc.Content;
             }
+            inhibitCopyToAll = false;
         }
 
         private void SaveContent(bool allLanguages = false)
@@ -637,7 +675,7 @@ namespace MSFSLocalizer
 
         private void tbContent_TextChanged(object sender, EventArgs e)
         {
-            if (config.AutoCopyToAll)
+            if (config.AutoCopyToAll && !inhibitCopyToAll)
             {
                 SaveContent(true);
             }

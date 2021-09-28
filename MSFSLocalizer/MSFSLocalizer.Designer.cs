@@ -95,7 +95,6 @@
             // 
             // msMenu
             // 
-            this.msMenu.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.msMenu.ImageScalingSize = new System.Drawing.Size(28, 28);
             this.msMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miFile,
@@ -258,10 +257,10 @@
             // 
             // bStringsSort
             // 
-            this.bStringsSort.Location = new System.Drawing.Point(483, 6);
+            this.bStringsSort.Location = new System.Drawing.Point(523, 6);
             this.bStringsSort.Margin = new System.Windows.Forms.Padding(6);
             this.bStringsSort.Name = "bStringsSort";
-            this.bStringsSort.Size = new System.Drawing.Size(105, 42);
+            this.bStringsSort.Size = new System.Drawing.Size(115, 42);
             this.bStringsSort.TabIndex = 13;
             this.bStringsSort.Text = "&Sort";
             this.bStringsSort.UseVisualStyleBackColor = true;
@@ -269,10 +268,10 @@
             // 
             // bDuplicateString
             // 
-            this.bDuplicateString.Location = new System.Drawing.Point(249, 6);
+            this.bDuplicateString.Location = new System.Drawing.Point(269, 6);
             this.bDuplicateString.Margin = new System.Windows.Forms.Padding(6);
             this.bDuplicateString.Name = "bDuplicateString";
-            this.bDuplicateString.Size = new System.Drawing.Size(105, 42);
+            this.bDuplicateString.Size = new System.Drawing.Size(115, 42);
             this.bDuplicateString.TabIndex = 12;
             this.bDuplicateString.Text = "D&uplicate";
             this.bDuplicateString.UseVisualStyleBackColor = true;
@@ -280,10 +279,10 @@
             // 
             // bStringRename
             // 
-            this.bStringRename.Location = new System.Drawing.Point(366, 6);
+            this.bStringRename.Location = new System.Drawing.Point(396, 6);
             this.bStringRename.Margin = new System.Windows.Forms.Padding(6);
             this.bStringRename.Name = "bStringRename";
-            this.bStringRename.Size = new System.Drawing.Size(105, 42);
+            this.bStringRename.Size = new System.Drawing.Size(115, 42);
             this.bStringRename.TabIndex = 11;
             this.bStringRename.Text = "&Rename";
             this.bStringRename.UseVisualStyleBackColor = true;
@@ -291,10 +290,10 @@
             // 
             // bDeleteString
             // 
-            this.bDeleteString.Location = new System.Drawing.Point(132, 6);
+            this.bDeleteString.Location = new System.Drawing.Point(142, 6);
             this.bDeleteString.Margin = new System.Windows.Forms.Padding(6);
             this.bDeleteString.Name = "bDeleteString";
-            this.bDeleteString.Size = new System.Drawing.Size(105, 42);
+            this.bDeleteString.Size = new System.Drawing.Size(115, 42);
             this.bDeleteString.TabIndex = 10;
             this.bDeleteString.Text = "&Delete";
             this.bDeleteString.UseVisualStyleBackColor = true;
@@ -305,7 +304,7 @@
             this.bAddString.Location = new System.Drawing.Point(15, 6);
             this.bAddString.Margin = new System.Windows.Forms.Padding(6);
             this.bAddString.Name = "bAddString";
-            this.bAddString.Size = new System.Drawing.Size(105, 42);
+            this.bAddString.Size = new System.Drawing.Size(115, 42);
             this.bAddString.TabIndex = 9;
             this.bAddString.Text = "&Add";
             this.bAddString.UseVisualStyleBackColor = true;
@@ -352,7 +351,7 @@
             this.gbxContent.Margin = new System.Windows.Forms.Padding(6);
             this.gbxContent.Name = "gbxContent";
             this.gbxContent.Padding = new System.Windows.Forms.Padding(6);
-            this.gbxContent.Size = new System.Drawing.Size(1394, 1171);
+            this.gbxContent.Size = new System.Drawing.Size(1391, 1171);
             this.gbxContent.TabIndex = 5;
             this.gbxContent.TabStop = false;
             this.gbxContent.Text = "Content";
@@ -496,7 +495,7 @@
             this.tbContent.Multiline = true;
             this.tbContent.Name = "tbContent";
             this.tbContent.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbContent.Size = new System.Drawing.Size(1132, 946);
+            this.tbContent.Size = new System.Drawing.Size(1129, 946);
             this.tbContent.TabIndex = 3;
             this.tbContent.TextChanged += new System.EventHandler(this.tbContent_TextChanged);
             // 
@@ -551,7 +550,7 @@
             this.gbxGlobal.Margin = new System.Windows.Forms.Padding(6);
             this.gbxGlobal.Name = "gbxGlobal";
             this.gbxGlobal.Padding = new System.Windows.Forms.Padding(6);
-            this.gbxGlobal.Size = new System.Drawing.Size(1394, 153);
+            this.gbxGlobal.Size = new System.Drawing.Size(1391, 153);
             this.gbxGlobal.TabIndex = 4;
             this.gbxGlobal.TabStop = false;
             this.gbxGlobal.Text = "Global Data";
