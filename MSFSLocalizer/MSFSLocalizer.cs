@@ -235,8 +235,8 @@ namespace MSFSLocalizer
                                 translated = true;
                                 break;
                             }
-                            languages.Add(lc.Content);
                         }
+                        languages.Add(lc.Content);
                     }
                     else
                         languages.Add(lc.Content);
