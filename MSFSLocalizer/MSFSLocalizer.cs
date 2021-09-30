@@ -475,7 +475,12 @@ namespace MSFSLocalizer
             if (res != DialogResult.Yes)
                 return;
 
-            tn.Nodes.Remove(tn);
+            int idx = locFile.Strings.IndexOf(ls);
+            if (idx != -1)
+            {
+                locFile.Strings.Remove(ls);
+                tvData.Nodes.Remove(tn);
+            }
             isDirty = true;
         }
 
