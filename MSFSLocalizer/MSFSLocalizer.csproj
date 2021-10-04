@@ -62,7 +62,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
+    <Compile Include="ExportDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExportDlg.Designer.cs">
+      <DependentUpon>ExportDlg.cs</DependentUpon>
+    </Compile>
     <Compile Include="JsonStructure.cs" />
+    <Compile Include="LanguageDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LanguageDlg.Designer.cs">
+      <DependentUpon>LanguageDlg.cs</DependentUpon>
+    </Compile>
     <Compile Include="MSFSLocalizer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,6 +95,12 @@
     <Compile Include="StringNameDlg.Designer.cs">
       <DependentUpon>StringNameDlg.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ExportDlg.resx">
+      <DependentUpon>ExportDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LanguageDlg.resx">
+      <DependentUpon>LanguageDlg.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MSFSLocalizer.resx">
       <DependentUpon>MSFSLocalizer.cs</DependentUpon>
     </EmbeddedResource>

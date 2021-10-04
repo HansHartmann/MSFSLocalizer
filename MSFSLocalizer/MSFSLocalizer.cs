@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Xml;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Windows.Forms;
 
 namespace MSFSLocalizer
 {
@@ -61,7 +53,7 @@ namespace MSFSLocalizer
             attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
             string author = ((AssemblyCompanyAttribute)attributes[0]).Company;
 
-            tsslInfo.Text = Application.ProductName + " " + Application.ProductVersion + " - " + copyright + " " + author;
+            tsslInfo.Text = Application.ProductName + " " + Application.ProductVersion + " - Developed by " + author + ". Licensed under MIT License";
         }
 
         private void miFileNew_Click(object sender, EventArgs e)
@@ -418,7 +410,7 @@ namespace MSFSLocalizer
             {
                 if (allLanguages || lc.Language == cbxLanguage.Text)
                 {
-                    lc.Content = tbContent.Text;
+                    lc.Content = tbContent.Text.Trim();
                 }
             }
             isDirty = true;
@@ -683,6 +675,64 @@ namespace MSFSLocalizer
             if (config.AutoCopyToAll && !inhibitCopyToAll)
             {
                 SaveContent(true);
+            }
+        }
+
+        private void miTranslationEdit_Click(object sender, EventArgs e)
+        {
+            LanguageDlg dlg = new LanguageDlg(Languages);
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                if (locFile.AddLanguage(dlg.SelLCID, dlg.CopyEnUS, config.PrimaryLanguage))
+                {
+                    string selLang = cbxLanguage.Text;
+                    cbxLanguage.Items.Clear();
+                    foreach (string lang in locFile.Languages)
+                    {
+                        cbxLanguage.Items.Add(lang);
+                    }
+                    for (int i = 0; i < cbxLanguage.Items.Count;i++)
+                    {
+                        if (cbxLanguage.Items[i].ToString() == selLang)
+                        {
+                            cbxLanguage.SelectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+                isDirty = true;
+            }
+        }
+
+        private void miTranslationExport_Click(object sender, EventArgs e)
+        {
+            ExportDlg dlg = new ExportDlg(locFile, Languages, config.PrimaryLanguage);
+            dlg.ShowDialog();
+        }
+
+        private void miTranslationImport_Click(object sender, EventArgs e)
+        {
+            if (ofdImport.ShowDialog() == DialogResult.OK)
+            {
+                if (locFile.ImportCSV(ofdImport.FileName))
+                {
+                    BuildGlobals();
+                    BuildTree();
+                    isDirty = true;
+
+                    if (config.AutoCopyToAll)
+                    {
+                        MessageBox.Show("Import complete! Since the localization file now contains translations, the automatic language copying setting has been disabled.",
+                            "Import Translation", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        config.AutoCopyToAll = false;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Import complete!", "Import Translation", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                else
+                    MessageBox.Show("Import cancelled!", "Import Translation", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
     }

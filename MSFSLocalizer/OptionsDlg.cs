@@ -24,6 +24,11 @@ namespace MSFSLocalizer
             tbName.Text = Config.Name;
             tbDefaultString.Text = Config.DefaultString;
             cbAutoCopyToAll.Checked = Config.AutoCopyToAll;
+            if (!string.IsNullOrEmpty(Config.PrimaryLanguage))
+            {
+                int idx = cbxLanguages.Items.IndexOf(Config.PrimaryLanguage);
+                cbxLanguages.SelectedIndex = idx;
+            }
         }
 
         private void bOK_Click(object sender, EventArgs e)
@@ -37,6 +42,7 @@ namespace MSFSLocalizer
             Config.Name = tbName.Text;
             Config.DefaultString = tbDefaultString.Text;
             Config.AutoCopyToAll = cbAutoCopyToAll.Checked;
+            Config.PrimaryLanguage = cbxLanguages.SelectedItem.ToString();
             Close();
             DialogResult = DialogResult.OK;
         }

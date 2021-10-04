@@ -40,6 +40,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.cbAutoCopyToAll = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.cbxLanguages = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label1
@@ -164,13 +166,45 @@
     "eating a new file. Do NOT use with any files that already contain translations!!" +
     "!";
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(18, 293);
+            this.label7.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(165, 25);
+            this.label7.TabIndex = 12;
+            this.label7.Text = "Master Language";
+            // 
+            // cbxLanguages
+            // 
+            this.cbxLanguages.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxLanguages.FormattingEnabled = true;
+            this.cbxLanguages.Items.AddRange(new object[] {
+            "en-US",
+            "fr-FR",
+            "de-DE",
+            "es-ES",
+            "it-IT",
+            "nl-NL",
+            "pl-PL",
+            "pt-BR",
+            "ru-RU",
+            "ja-JP"});
+            this.cbxLanguages.Location = new System.Drawing.Point(239, 290);
+            this.cbxLanguages.Name = "cbxLanguages";
+            this.cbxLanguages.Size = new System.Drawing.Size(185, 32);
+            this.cbxLanguages.TabIndex = 13;
+            // 
             // OptionsDlg
             // 
             this.AcceptButton = this.bOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.bCancel;
-            this.ClientSize = new System.Drawing.Size(1236, 291);
+            this.ClientSize = new System.Drawing.Size(1236, 358);
+            this.Controls.Add(this.cbxLanguages);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.cbAutoCopyToAll);
             this.Controls.Add(this.label5);
@@ -189,6 +223,7 @@
             this.MinimizeBox = false;
             this.Name = "OptionsDlg";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Options";
             this.Load += new System.EventHandler(this.OptionsDlg_Load);
             this.ResumeLayout(false);
@@ -210,5 +245,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox cbAutoCopyToAll;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox cbxLanguages;
     }
 }

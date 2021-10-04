@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Xml.XPath;
 
 namespace MSFSLocalizer
 {
@@ -21,6 +18,8 @@ namespace MSFSLocalizer
         public string LastProject { get; set; }
         [XmlElementAttribute("AutoCopyToAll")]
         public bool AutoCopyToAll { get; set; }
+        [XmlElementAttribute("PrimaryLanguage")]
+        public string PrimaryLanguage { get; set; }
         [XmlElementAttribute("RecentProjects")]
         public List<string> RecentProjects;
 
@@ -47,6 +46,7 @@ namespace MSFSLocalizer
                     xml.WriteElementString("DefaultString", DefaultString);
                     xml.WriteElementString("LastProject", LastProject);
                     xml.WriteElementString("AutoCopyToAll", Convert.ToString(AutoCopyToAll));
+                    xml.WriteElementString("PrimaryLanguage", PrimaryLanguage);
                     xml.WriteStartElement("RecentProjects");
                     xml.WriteWhitespace("\n");
                     int idx = 0;
@@ -82,6 +82,8 @@ namespace MSFSLocalizer
                     LastProject = xn.InnerText;
                 if (xn.Name == "AutoCopyToAll")
                     AutoCopyToAll = Convert.ToBoolean(xn.InnerText);
+                if (xn.Name == "PrimaryLanguage")
+                    PrimaryLanguage = xn.InnerText;
                 if (xn.Name == "RecentProjects")
                 {
                     foreach (XmlNode xnRP in xn.ChildNodes)
