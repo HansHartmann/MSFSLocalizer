@@ -13,8 +13,9 @@ namespace MSFSLocalizer
     public partial class StringNameDlg : Form
     {
         public string NewName { get; private set; }
+        public bool AppendTitleAction { get; private set; }
 
-        public StringNameDlg(string previousName, Config aCfg)
+        public StringNameDlg(string previousName, Config aCfg, bool HideTitleAction = false)
         {
             InitializeComponent();
 
@@ -22,6 +23,20 @@ namespace MSFSLocalizer
             if (string.IsNullOrEmpty(previousName))
                 previousName = aCfg.DefaultString;
             tbStringName.Text = previousName;
+            tbStringName.SelectionStart = tbStringName.Text.Length;
+
+            if (HideTitleAction)
+            {
+                cbTitleAction.Visible = false;
+                AppendTitleAction = false;
+            }    
+            else
+            {
+                cbTitleAction.Visible = true;
+                cbTitleAction.Checked = aCfg.AppendTitleAction;
+                AppendTitleAction = aCfg.AppendTitleAction;
+
+            }
         }
 
         private void bOK_Click(object sender, EventArgs e)
@@ -32,7 +47,8 @@ namespace MSFSLocalizer
                 return;
             }
 
-            NewName = tbStringName.Text;
+            NewName = tbStringName.Text.Trim();
+            AppendTitleAction = cbTitleAction.Checked;
             Close();
             DialogResult = DialogResult.OK;
         }

@@ -2,7 +2,9 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -29,6 +31,13 @@ namespace MSFSLocalizer
 
         private void MSFSLocalizer_Load(object sender, EventArgs e)
         {
+            if (config.WindowValid)
+            {
+                StartPosition = FormStartPosition.Manual;
+                Location = new Point(config.WindowX, config.WindowY);
+                Size = new Size(config.WindowW, config.WindowH);
+            }
+
             if (!string.IsNullOrEmpty(config.LastProject))
                 LoadJson(config.LastProject);
             CheckForTranslations();
@@ -136,6 +145,7 @@ namespace MSFSLocalizer
         private void miFileOptions_Click(object sender, EventArgs e)
         {
             OptionsDlg dlg = new OptionsDlg(config);
+            dlg.Owner = this;
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 config = dlg.Config;
@@ -184,7 +194,8 @@ namespace MSFSLocalizer
                                 cont.Language = lang;
                                 try
                                 {
-                                    cont.Content = (string)obj["LocalisationFile"]["Strings"][str.Name]["Languages"][lang]["Text"];
+                                    string tmp = (string)obj["LocalisationFile"]["Strings"][str.Name]["Languages"][lang]["Text"];
+                                    cont.Content = WebUtility.HtmlDecode(tmp);
                                     cont.LocalizationStatus = (string)obj["LocalisationFile"]["Strings"][str.Name]["Languages"][lang]["LocalizationStatus"];
                                 }
                                 catch (Exception)
@@ -216,7 +227,7 @@ namespace MSFSLocalizer
             foreach (LocalizationString ls in locFile.Strings)
             {
                 List<string> languages = new List<string>();
-                foreach(LocalizationContent lc in ls.Content)
+                foreach (LocalizationContent lc in ls.Content)
                 {
                     if (languages.Count > 0)
                     {
@@ -316,7 +327,9 @@ namespace MSFSLocalizer
 
         private string Q(string s)
         {
-            return "\"" + s + "\"";
+            if (!string.IsNullOrEmpty(s))
+                s = s.Replace("\n", "<br/>");
+            return "\"" + WebUtility.HtmlEncode(s) + "\"";
         }
 
         private string Prop(string s)
@@ -345,8 +358,11 @@ namespace MSFSLocalizer
             foreach (LocalizationString ls in locFile.Strings)
             {
                 TreeNode tn = tvData.Nodes.Add(ls.Name);
+                tn.Name = ls.Name;
                 tn.Tag = ls;
             }
+            if (config.AutoSort)
+                tvData.Sort();
             tvData.EndUpdate();
 
             if (tvData.Nodes.Count > 0)
@@ -419,17 +435,74 @@ namespace MSFSLocalizer
         private void bAddString_Click(object sender, EventArgs e)
         {
             StringNameDlg dlg = new StringNameDlg("", config);
+            dlg.Owner = this;
             if (dlg.ShowDialog() != DialogResult.OK)
                 return;
 
-            string name = dlg.NewName;
-            TreeNode tn = FindStringName(name);
-            if (tn != null)
+            ResetSelectedNodeColor();
+
+            config.AppendTitleAction = dlg.AppendTitleAction;
+            string name, action = "";
+            if (config.AppendTitleAction)
             {
-                MessageBox.Show(string.Format("A string with the name '{0}' already exists!", name));
-                tvData.SelectedNode = tn;
-                tvData.Focus();
-                return;
+                name = dlg.NewName + "_TITLE";
+                action = dlg.NewName + "_ACTION";
+            }
+            else
+                name = dlg.NewName;
+
+            TreeNode tn;
+
+            if (config.AppendTitleAction)
+            {
+                tn = FindStringName(name);
+                if (tn != null)
+                {
+                    MessageBox.Show(string.Format("A string with the name '{0}' already exists!", name));
+                    tvData.SelectedNode = tn;
+                    tvData.Focus();
+                    return;
+                }
+
+                tn = FindStringName(action);
+                if (tn != null)
+                {
+                    MessageBox.Show(string.Format("A string with the name '{0}' already exists!", action));
+                    tvData.SelectedNode = tn;
+                    tvData.Focus();
+                    return;
+                }
+
+                LocalizationString lsAction = new LocalizationString();
+                lsAction.Name = action;
+                string abp = "LocalisationFile.Strings." + name + ".";
+                Guid ag = Guid.NewGuid();
+                lsAction.UUID = ag.ToString();
+                lsAction.LastModifiedBy = config.Name;
+                lsAction.LastModifiedDate = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
+                lsAction.LocalizationStatus = "Work in Progress";
+                foreach (string lang in Languages)
+                {
+                    LocalizationContent cont = new LocalizationContent();
+                    cont.Language = lang;
+                    cont.Content = "";
+                    lsAction.Content.Add(cont);
+                }
+                locFile.Strings.Add(lsAction);
+                tn = tvData.Nodes.Add(lsAction.Name);
+                tn.Name = lsAction.Name;
+                tn.Tag = lsAction;
+            }
+            else
+            {
+                tn = FindStringName(name);
+                if (tn != null)
+                {
+                    MessageBox.Show(string.Format("A string with the name '{0}' already exists!", name));
+                    tvData.SelectedNode = tn;
+                    tvData.Focus();
+                    return;
+                }
             }
 
             LocalizationString ls = new LocalizationString();
@@ -449,9 +522,10 @@ namespace MSFSLocalizer
             }
             locFile.Strings.Add(ls);
             tn = tvData.Nodes.Add(ls.Name);
+            tn.Name = ls.Name;
             tn.Tag = ls;
-            tvData.SelectedNode = tn;
-            tvData.Focus();
+            SortTree(ls.Name);
+            tbContent.Focus();
             isDirty = true;
         }
 
@@ -459,6 +533,8 @@ namespace MSFSLocalizer
         {
             if (tvData.SelectedNode == null)
                 return;
+
+            ResetSelectedNodeColor();
 
             TreeNode tn = tvData.SelectedNode;
             LocalizationString ls = tn.Tag as LocalizationString;
@@ -473,6 +549,8 @@ namespace MSFSLocalizer
                 locFile.Strings.Remove(ls);
                 tvData.Nodes.Remove(tn);
             }
+            if (config.AutoSort)
+                tvData.Sort();
             isDirty = true;
         }
 
@@ -484,9 +562,12 @@ namespace MSFSLocalizer
             TreeNode tn = tvData.SelectedNode;
             LocalizationString lsSrc = tn.Tag as LocalizationString;
 
-            StringNameDlg dlg = new StringNameDlg(lsSrc.Name + "_COPY", config);
+            StringNameDlg dlg = new StringNameDlg(lsSrc.Name + "_COPY", config, true);
+            dlg.Owner = this;
             if (dlg.ShowDialog() != DialogResult.OK)
                 return;
+
+            ResetSelectedNodeColor();
 
             string name = dlg.NewName;
             TreeNode tnExists = FindStringName(name);
@@ -505,9 +586,11 @@ namespace MSFSLocalizer
 
             locFile.Strings.Add(ls);
             tn = tvData.Nodes.Add(ls.Name);
+            tn.Name = ls.Name;
             tn.Tag = ls;
+            SortTree(ls.Name);
             tvData.SelectedNode = tn;
-            tvData.Focus();
+            tbContent.Focus();
             isDirty = true;
         }
 
@@ -519,7 +602,8 @@ namespace MSFSLocalizer
             TreeNode tn = tvData.SelectedNode;
             LocalizationString ls = tn.Tag as LocalizationString;
 
-            StringNameDlg dlg = new StringNameDlg(ls.Name, config);
+            StringNameDlg dlg = new StringNameDlg(ls.Name, config, true);
+            dlg.Owner = this;
             if (dlg.ShowDialog() != DialogResult.OK)
                 return;
 
@@ -534,11 +618,18 @@ namespace MSFSLocalizer
 
             ls.Name = dlg.NewName;
             tn.Text = dlg.NewName;
+            SortTree(dlg.NewName);
             isDirty = true;
         }
         private void bStringsSort_Click(object sender, EventArgs e)
         {
-            tvData.Sort();
+            if (tvData.SelectedNode != null)
+            {
+                string name = tvData.SelectedNode.Text;
+                SortTree(name);
+            }
+            else
+                tvData.Sort();
         }
 
         private void bSetUUID_Click(object sender, EventArgs e)
@@ -646,13 +737,12 @@ namespace MSFSLocalizer
         {
             ClearRecentProjectList();
 
-            miFileSep2.Visible = config.RecentProjects.Count != 0;
             int cnt = 0;
             foreach (string rp in config.RecentProjects)
             {
                 ToolStripMenuItem mi = new ToolStripMenuItem(rp, null, miFileRecentProjects_Click);
                 mi.Tag = "RecentProject";
-                miFile.DropDownItems.Insert(5 + cnt, mi);
+                miFileRecent.DropDownItems.Add(mi);
                 cnt++;
             }
         }
@@ -681,6 +771,7 @@ namespace MSFSLocalizer
         private void miTranslationEdit_Click(object sender, EventArgs e)
         {
             LanguageDlg dlg = new LanguageDlg(Languages);
+            dlg.Owner = this;
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 if (locFile.AddLanguage(dlg.SelLCID, dlg.CopyEnUS, config.PrimaryLanguage))
@@ -691,7 +782,7 @@ namespace MSFSLocalizer
                     {
                         cbxLanguage.Items.Add(lang);
                     }
-                    for (int i = 0; i < cbxLanguage.Items.Count;i++)
+                    for (int i = 0; i < cbxLanguage.Items.Count; i++)
                     {
                         if (cbxLanguage.Items[i].ToString() == selLang)
                         {
@@ -707,6 +798,7 @@ namespace MSFSLocalizer
         private void miTranslationExport_Click(object sender, EventArgs e)
         {
             ExportDlg dlg = new ExportDlg(locFile, Languages, config.PrimaryLanguage);
+            dlg.Owner = this;
             dlg.ShowDialog();
         }
 
@@ -734,6 +826,112 @@ namespace MSFSLocalizer
                 else
                     MessageBox.Show("Import cancelled!", "Import Translation", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
+        }
+
+        // Make sure the selection in the tree remains visible!
+        private void tvData_Leave(object sender, EventArgs e)
+        {
+            SetSelectedNodeColor();
+        }
+
+        private void tvData_BeforeSelect(object sender, TreeViewCancelEventArgs e)
+        {
+            ResetSelectedNodeColor();
+        }
+
+        private void SetSelectedNodeColor()
+        {
+            if (tvData.SelectedNode == null)
+                return;
+            tvData.SelectedNode.BackColor = SystemColors.Highlight;
+            tvData.SelectedNode.ForeColor = SystemColors.Window;
+        }
+
+        private void ResetSelectedNodeColor()
+        {
+            if (tvData.SelectedNode == null)
+                return;
+            tvData.SelectedNode.BackColor = SystemColors.Window;
+            tvData.SelectedNode.ForeColor = SystemColors.WindowText;
+        }
+
+        private void SortTree(string name)
+        {
+            tvData.BeginUpdate();
+            if (config.AutoSort)
+                tvData.Sort();
+            int idx = tvData.Nodes.IndexOfKey(name);
+            if (idx != -1)
+            {
+                tvData.SelectedNode = tvData.Nodes[idx];
+                SetSelectedNodeColor();
+            }
+            tvData.EndUpdate();
+            if (tvData.SelectedNode != null)
+                tvData.SelectedNode.EnsureVisible();
+        }
+
+        private void bSwitchAction_Click(object sender, EventArgs e)
+        {
+            if (tvData.SelectedNode == null)
+                return;
+
+            string name = tvData.SelectedNode.Text;
+            int idx = name.IndexOf("_TITLE");
+            if (idx == -1)
+            {
+                Console.Beep();
+                return;
+            }
+
+            ResetSelectedNodeColor();
+            name = name.Replace("_TITLE", "_ACTION");
+            idx = tvData.Nodes.IndexOfKey(name);
+            if (idx != -1)
+            {
+                tvData.SelectedNode = tvData.Nodes[idx];
+                SetSelectedNodeColor();
+            }
+        }
+
+        private void bSwitchTitle_Click(object sender, EventArgs e)
+        {
+            if (tvData.SelectedNode == null)
+                return;
+
+            string name = tvData.SelectedNode.Text;
+            int idx = name.IndexOf("_ACTION");
+            if (idx == -1)
+            {
+                Console.Beep();
+                return;
+            }
+
+            ResetSelectedNodeColor();
+            name = name.Replace("_ACTION", "_TITLE");
+            idx = tvData.Nodes.IndexOfKey(name);
+            if (idx != -1)
+            {
+                tvData.SelectedNode = tvData.Nodes[idx];
+                SetSelectedNodeColor();
+            }
+        }
+
+        private void tsContextCopyName_Click(object sender, EventArgs e)
+        {
+            if (tvData.SelectedNode == null)
+                return;
+
+            string name = tvData.SelectedNode.Text;
+            int idx = name.IndexOf(config.DefaultString);
+            if (idx == -1)
+                return;
+            name = name.Remove(0, config.DefaultString.Length);
+            if (name.EndsWith("_ACTION"))
+                name = name.Remove(name.LastIndexOf("_ACTION"));
+            if (name.EndsWith("_TITLE"))
+                name = name.Remove(name.LastIndexOf("_TITLE"));
+            Clipboard.SetText(name);
         }
     }
 }

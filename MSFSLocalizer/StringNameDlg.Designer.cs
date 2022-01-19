@@ -33,6 +33,7 @@ namespace MSFSLocalizer
             this.label7 = new System.Windows.Forms.Label();
             this.bCancel = new System.Windows.Forms.Button();
             this.bOK = new System.Windows.Forms.Button();
+            this.cbTitleAction = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // tbStringName
@@ -77,6 +78,16 @@ namespace MSFSLocalizer
             this.bOK.UseVisualStyleBackColor = true;
             this.bOK.Click += new System.EventHandler(this.bOK_Click);
             // 
+            // cbTitleAction
+            // 
+            this.cbTitleAction.AutoSize = true;
+            this.cbTitleAction.Location = new System.Drawing.Point(20, 71);
+            this.cbTitleAction.Name = "cbTitleAction";
+            this.cbTitleAction.Size = new System.Drawing.Size(366, 29);
+            this.cbTitleAction.TabIndex = 17;
+            this.cbTitleAction.Text = "&Create  _TITLE and _ACTION strings";
+            this.cbTitleAction.UseVisualStyleBackColor = true;
+            // 
             // StringNameDlg
             // 
             this.AcceptButton = this.bOK;
@@ -84,6 +95,7 @@ namespace MSFSLocalizer
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.bCancel;
             this.ClientSize = new System.Drawing.Size(894, 124);
+            this.Controls.Add(this.cbTitleAction);
             this.Controls.Add(this.bCancel);
             this.Controls.Add(this.bOK);
             this.Controls.Add(this.tbStringName);
@@ -106,5 +118,6 @@ namespace MSFSLocalizer
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button bCancel;
         private System.Windows.Forms.Button bOK;
+        private System.Windows.Forms.CheckBox cbTitleAction;
     }
 }

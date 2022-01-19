@@ -18,10 +18,25 @@ namespace MSFSLocalizer
         public string LastProject { get; set; }
         [XmlElementAttribute("AutoCopyToAll")]
         public bool AutoCopyToAll { get; set; }
+        [XmlElementAttribute("AutoSort")]
+        public bool AutoSort { get; set; }
         [XmlElementAttribute("PrimaryLanguage")]
         public string PrimaryLanguage { get; set; }
+        [XmlElementAttribute("AppendTitleAction")]
+        public bool AppendTitleAction { get; set; }
+        [XmlElementAttribute("WindowX")]
+        public int WindowX { get; set; }
+        [XmlElementAttribute("WindowY")]
+        public int WindowY { get; set; }
+        [XmlElementAttribute("WindowW")]
+        public int WindowW { get; set; }
+        [XmlElementAttribute("WindowH")]
+        public int WindowH { get; set; }
         [XmlElementAttribute("RecentProjects")]
         public List<string> RecentProjects;
+
+        [XmlIgnoreAttribute]
+        public bool WindowValid { get; private set; }
 
         public Config()
         {
@@ -39,14 +54,19 @@ namespace MSFSLocalizer
                 UTF8Encoding utf8e = new UTF8Encoding();
                 using (XmlTextWriter xml = new XmlTextWriter(memStrm, utf8e))
                 {
-                    //ser.Serialize(xml, this);
                     xml.WriteStartDocument();
                     xml.WriteStartElement("Config");
                     xml.WriteElementString("Name", Name);
                     xml.WriteElementString("DefaultString", DefaultString);
                     xml.WriteElementString("LastProject", LastProject);
                     xml.WriteElementString("AutoCopyToAll", Convert.ToString(AutoCopyToAll));
+                    xml.WriteElementString("AutoSort", Convert.ToString(AutoSort));
                     xml.WriteElementString("PrimaryLanguage", PrimaryLanguage);
+                    xml.WriteElementString("AppendTitleAction", Convert.ToString(AppendTitleAction));
+                    xml.WriteElementString("WindowX", Convert.ToString(WindowX));
+                    xml.WriteElementString("WindowY", Convert.ToString(WindowY));
+                    xml.WriteElementString("WindowW", Convert.ToString(WindowW));
+                    xml.WriteElementString("WindowH", Convert.ToString(WindowH));
                     xml.WriteStartElement("RecentProjects");
                     xml.WriteWhitespace("\n");
                     int idx = 0;
@@ -82,8 +102,20 @@ namespace MSFSLocalizer
                     LastProject = xn.InnerText;
                 if (xn.Name == "AutoCopyToAll")
                     AutoCopyToAll = Convert.ToBoolean(xn.InnerText);
+                if (xn.Name == "AutoSort")
+                    AutoSort = Convert.ToBoolean(xn.InnerText);
                 if (xn.Name == "PrimaryLanguage")
                     PrimaryLanguage = xn.InnerText;
+                if (xn.Name == "AppendTitleAction")
+                    AppendTitleAction = Convert.ToBoolean(xn.InnerText);
+                if (xn.Name == "WindowX")
+                    WindowX = Convert.ToInt32(xn.InnerText);
+                if (xn.Name == "WindowY")
+                    WindowY = Convert.ToInt32(xn.InnerText);
+                if (xn.Name == "WindowW")
+                    WindowW = Convert.ToInt32(xn.InnerText);
+                if (xn.Name == "WindowH")
+                    WindowH = Convert.ToInt32(xn.InnerText);
                 if (xn.Name == "RecentProjects")
                 {
                     foreach (XmlNode xnRP in xn.ChildNodes)
@@ -92,6 +124,8 @@ namespace MSFSLocalizer
                     }
                 }
             }
+
+            WindowValid = WindowW > 0 && WindowH > 0;
         }
 
         public void AddToRecentProjects(string fname)

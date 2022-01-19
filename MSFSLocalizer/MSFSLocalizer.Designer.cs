@@ -36,8 +36,8 @@
             this.miFileOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileSave = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.miFileRecent = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileSep1 = new System.Windows.Forms.ToolStripSeparator();
-            this.miFileSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.miFileOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.miFileExit = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,6 +55,8 @@
             this.tsContextDuplicate = new System.Windows.Forms.ToolStripMenuItem();
             this.tsContextRename = new System.Windows.Forms.ToolStripMenuItem();
             this.tsContextSort = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsContextCopyName = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlButtons = new System.Windows.Forms.Panel();
             this.bStringsSort = new System.Windows.Forms.Button();
             this.bDuplicateString = new System.Windows.Forms.Button();
@@ -64,6 +66,8 @@
             this.StatusStrip = new System.Windows.Forms.StatusStrip();
             this.tsslInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.gbxContent = new System.Windows.Forms.GroupBox();
+            this.bSwitchTitle = new System.Windows.Forms.Button();
+            this.bSwitchAction = new System.Windows.Forms.Button();
             this.bCopyAll = new System.Windows.Forms.Button();
             this.bRevertString = new System.Windows.Forms.Button();
             this.bSaveString = new System.Windows.Forms.Button();
@@ -125,8 +129,8 @@
             this.miFileOpen,
             this.miFileSave,
             this.miFileSaveAs,
+            this.miFileRecent,
             this.miFileSep1,
-            this.miFileSep2,
             this.miFileOptions,
             this.toolStripMenuItem2,
             this.miFileExit});
@@ -167,15 +171,16 @@
             this.miFileSaveAs.Text = "Save &as...";
             this.miFileSaveAs.Click += new System.EventHandler(this.miFileSaveAs_Click);
             // 
+            // miFileRecent
+            // 
+            this.miFileRecent.Name = "miFileRecent";
+            this.miFileRecent.Size = new System.Drawing.Size(341, 40);
+            this.miFileRecent.Text = "Recently Used";
+            // 
             // miFileSep1
             // 
             this.miFileSep1.Name = "miFileSep1";
             this.miFileSep1.Size = new System.Drawing.Size(338, 6);
-            // 
-            // miFileSep2
-            // 
-            this.miFileSep2.Name = "miFileSep2";
-            this.miFileSep2.Size = new System.Drawing.Size(338, 6);
             // 
             // miFileOptions
             // 
@@ -269,14 +274,15 @@
             this.tvData.ContextMenuStrip = this.csMenu;
             this.tvData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tvData.FullRowSelect = true;
-            this.tvData.HideSelection = false;
             this.tvData.Location = new System.Drawing.Point(0, 0);
             this.tvData.Margin = new System.Windows.Forms.Padding(6);
             this.tvData.Name = "tvData";
             this.tvData.Size = new System.Drawing.Size(720, 1306);
             this.tvData.TabIndex = 0;
+            this.tvData.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvData_BeforeSelect);
             this.tvData.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvData_AfterSelect);
             this.tvData.DoubleClick += new System.EventHandler(this.tvData_DoubleClick);
+            this.tvData.Leave += new System.EventHandler(this.tvData_Leave);
             // 
             // csMenu
             // 
@@ -286,44 +292,59 @@
             this.tsContextDelete,
             this.tsContextDuplicate,
             this.tsContextRename,
-            this.tsContextSort});
+            this.tsContextSort,
+            this.toolStripMenuItem3,
+            this.tsContextCopyName});
             this.csMenu.Name = "csMenu";
-            this.csMenu.Size = new System.Drawing.Size(175, 184);
+            this.csMenu.Size = new System.Drawing.Size(271, 264);
             // 
             // tsContextAdd
             // 
             this.tsContextAdd.Name = "tsContextAdd";
-            this.tsContextAdd.Size = new System.Drawing.Size(174, 36);
+            this.tsContextAdd.Size = new System.Drawing.Size(270, 36);
             this.tsContextAdd.Text = "Add";
             this.tsContextAdd.Click += new System.EventHandler(this.bAddString_Click);
             // 
             // tsContextDelete
             // 
             this.tsContextDelete.Name = "tsContextDelete";
-            this.tsContextDelete.Size = new System.Drawing.Size(174, 36);
+            this.tsContextDelete.Size = new System.Drawing.Size(270, 36);
             this.tsContextDelete.Text = "Delete";
             this.tsContextDelete.Click += new System.EventHandler(this.bDeleteString_Click);
             // 
             // tsContextDuplicate
             // 
             this.tsContextDuplicate.Name = "tsContextDuplicate";
-            this.tsContextDuplicate.Size = new System.Drawing.Size(174, 36);
+            this.tsContextDuplicate.Size = new System.Drawing.Size(270, 36);
             this.tsContextDuplicate.Text = "Duplicate";
             this.tsContextDuplicate.Click += new System.EventHandler(this.bDuplicateString_Click);
             // 
             // tsContextRename
             // 
             this.tsContextRename.Name = "tsContextRename";
-            this.tsContextRename.Size = new System.Drawing.Size(174, 36);
+            this.tsContextRename.Size = new System.Drawing.Size(270, 36);
             this.tsContextRename.Text = "Rename";
             this.tsContextRename.Click += new System.EventHandler(this.bStringRename_Click);
             // 
             // tsContextSort
             // 
             this.tsContextSort.Name = "tsContextSort";
-            this.tsContextSort.Size = new System.Drawing.Size(174, 36);
+            this.tsContextSort.Size = new System.Drawing.Size(270, 36);
             this.tsContextSort.Text = "Sort";
             this.tsContextSort.Click += new System.EventHandler(this.bStringsSort_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(267, 6);
+            // 
+            // tsContextCopyName
+            // 
+            this.tsContextCopyName.Name = "tsContextCopyName";
+            this.tsContextCopyName.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.tsContextCopyName.Size = new System.Drawing.Size(270, 36);
+            this.tsContextCopyName.Text = "Copy Name";
+            this.tsContextCopyName.Click += new System.EventHandler(this.tsContextCopyName_Click);
             // 
             // pnlButtons
             // 
@@ -413,6 +434,8 @@
             this.gbxContent.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbxContent.Controls.Add(this.bSwitchTitle);
+            this.gbxContent.Controls.Add(this.bSwitchAction);
             this.gbxContent.Controls.Add(this.bCopyAll);
             this.gbxContent.Controls.Add(this.bRevertString);
             this.gbxContent.Controls.Add(this.bSaveString);
@@ -434,10 +457,32 @@
             this.gbxContent.Margin = new System.Windows.Forms.Padding(6);
             this.gbxContent.Name = "gbxContent";
             this.gbxContent.Padding = new System.Windows.Forms.Padding(6);
-            this.gbxContent.Size = new System.Drawing.Size(1373, 1171);
+            this.gbxContent.Size = new System.Drawing.Size(1349, 1171);
             this.gbxContent.TabIndex = 5;
             this.gbxContent.TabStop = false;
             this.gbxContent.Text = "Content";
+            // 
+            // bSwitchTitle
+            // 
+            this.bSwitchTitle.Location = new System.Drawing.Point(12, 428);
+            this.bSwitchTitle.Margin = new System.Windows.Forms.Padding(6);
+            this.bSwitchTitle.Name = "bSwitchTitle";
+            this.bSwitchTitle.Size = new System.Drawing.Size(207, 42);
+            this.bSwitchTitle.TabIndex = 18;
+            this.bSwitchTitle.Text = "Switch to Titl&e";
+            this.bSwitchTitle.UseVisualStyleBackColor = true;
+            this.bSwitchTitle.Click += new System.EventHandler(this.bSwitchTitle_Click);
+            // 
+            // bSwitchAction
+            // 
+            this.bSwitchAction.Location = new System.Drawing.Point(12, 374);
+            this.bSwitchAction.Margin = new System.Windows.Forms.Padding(6);
+            this.bSwitchAction.Name = "bSwitchAction";
+            this.bSwitchAction.Size = new System.Drawing.Size(207, 42);
+            this.bSwitchAction.TabIndex = 14;
+            this.bSwitchAction.Text = "S&witch to Action";
+            this.bSwitchAction.UseVisualStyleBackColor = true;
+            this.bSwitchAction.Click += new System.EventHandler(this.bSwitchAction_Click);
             // 
             // bCopyAll
             // 
@@ -452,7 +497,7 @@
             // 
             // bRevertString
             // 
-            this.bRevertString.Location = new System.Drawing.Point(1243, 89);
+            this.bRevertString.Location = new System.Drawing.Point(1183, 90);
             this.bRevertString.Margin = new System.Windows.Forms.Padding(6);
             this.bRevertString.Name = "bRevertString";
             this.bRevertString.Size = new System.Drawing.Size(138, 42);
@@ -463,7 +508,7 @@
             // 
             // bSaveString
             // 
-            this.bSaveString.Location = new System.Drawing.Point(1243, 31);
+            this.bSaveString.Location = new System.Drawing.Point(1183, 32);
             this.bSaveString.Margin = new System.Windows.Forms.Padding(6);
             this.bSaveString.Name = "bSaveString";
             this.bSaveString.Size = new System.Drawing.Size(138, 42);
@@ -578,7 +623,7 @@
             this.tbContent.Multiline = true;
             this.tbContent.Name = "tbContent";
             this.tbContent.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbContent.Size = new System.Drawing.Size(1111, 946);
+            this.tbContent.Size = new System.Drawing.Size(1087, 946);
             this.tbContent.TabIndex = 3;
             this.tbContent.TextChanged += new System.EventHandler(this.tbContent_TextChanged);
             // 
@@ -633,7 +678,7 @@
             this.gbxGlobal.Margin = new System.Windows.Forms.Padding(6);
             this.gbxGlobal.Name = "gbxGlobal";
             this.gbxGlobal.Padding = new System.Windows.Forms.Padding(6);
-            this.gbxGlobal.Size = new System.Drawing.Size(1373, 153);
+            this.gbxGlobal.Size = new System.Drawing.Size(1349, 153);
             this.gbxGlobal.TabIndex = 4;
             this.gbxGlobal.TabStop = false;
             this.gbxGlobal.Text = "Global Data";
@@ -795,7 +840,6 @@
         private System.Windows.Forms.Timer tmrDirty;
         private System.Windows.Forms.StatusStrip StatusStrip;
         private System.Windows.Forms.ToolStripStatusLabel tsslInfo;
-        private System.Windows.Forms.ToolStripSeparator miFileSep2;
         private System.Windows.Forms.Button bStringsSort;
         private System.Windows.Forms.ContextMenuStrip csMenu;
         private System.Windows.Forms.ToolStripMenuItem tsContextDelete;
@@ -809,6 +853,11 @@
         private System.Windows.Forms.ToolStripMenuItem miTranslationExport;
         private System.Windows.Forms.ToolStripMenuItem miTranslationImport;
         private System.Windows.Forms.OpenFileDialog ofdImport;
+        private System.Windows.Forms.ToolStripMenuItem miFileRecent;
+        private System.Windows.Forms.Button bSwitchTitle;
+        private System.Windows.Forms.Button bSwitchAction;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem tsContextCopyName;
     }
 }
 

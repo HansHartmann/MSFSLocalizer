@@ -24,6 +24,7 @@ namespace MSFSLocalizer
             tbName.Text = Config.Name;
             tbDefaultString.Text = Config.DefaultString;
             cbAutoCopyToAll.Checked = Config.AutoCopyToAll;
+            cbAutoSort.Checked = Config.AutoSort;
             if (!string.IsNullOrEmpty(Config.PrimaryLanguage))
             {
                 int idx = cbxLanguages.Items.IndexOf(Config.PrimaryLanguage);
@@ -43,6 +44,7 @@ namespace MSFSLocalizer
             Config.DefaultString = tbDefaultString.Text;
             Config.AutoCopyToAll = cbAutoCopyToAll.Checked;
             Config.PrimaryLanguage = cbxLanguages.SelectedItem.ToString();
+            Config.AutoSort = cbAutoSort.Checked;
             Close();
             DialogResult = DialogResult.OK;
         }
@@ -50,6 +52,21 @@ namespace MSFSLocalizer
         private void bClearRecentProjects_Click(object sender, EventArgs e)
         {
             Config.RecentProjects.Clear();
+        }
+
+        private void bWindowPosCapture_Click(object sender, EventArgs e)
+        {
+            Config.WindowX = Owner.Location.X;
+            Config.WindowY = Owner.Location.Y;
+            Config.WindowW = Owner.Size.Width;
+            Config.WindowH = Owner.Size.Height;
+        }
+        private void bWindowPosReset_Click(object sender, EventArgs e)
+        {
+            Config.WindowX = 0;
+            Config.WindowY = 0;
+            Config.WindowW = 0;
+            Config.WindowH = 0;
         }
     }
 }
