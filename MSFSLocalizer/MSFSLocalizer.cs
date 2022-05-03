@@ -262,6 +262,9 @@ namespace MSFSLocalizer
             string CR = Environment.NewLine;
             try
             {
+                locFile.Version = tbVersion.Text;
+                locFile.UUID = tbUUID.Text;
+
                 string json = "{ " + CR + "\"LocalisationFile\": { " + CR;
                 json += Prop("Version") + Q(locFile.Version) + "," + CR;
                 json += Prop("UUID") + Q(locFile.UUID) + "," + CR;
