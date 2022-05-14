@@ -58,6 +58,8 @@
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.tsContextCopyName = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlButtons = new System.Windows.Forms.Panel();
+            this.tbFilter = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.bStringsSort = new System.Windows.Forms.Button();
             this.bDuplicateString = new System.Windows.Forms.Button();
             this.bStringRename = new System.Windows.Forms.Button();
@@ -110,7 +112,6 @@
             // 
             // msMenu
             // 
-            this.msMenu.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.msMenu.ImageScalingSize = new System.Drawing.Size(28, 28);
             this.msMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miFile,
@@ -264,9 +265,9 @@
             // 
             this.pnlTree.Controls.Add(this.tvData);
             this.pnlTree.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTree.Location = new System.Drawing.Point(0, 57);
+            this.pnlTree.Location = new System.Drawing.Point(0, 98);
             this.pnlTree.Name = "pnlTree";
-            this.pnlTree.Size = new System.Drawing.Size(720, 1306);
+            this.pnlTree.Size = new System.Drawing.Size(720, 1265);
             this.pnlTree.TabIndex = 2;
             // 
             // tvData
@@ -277,7 +278,7 @@
             this.tvData.Location = new System.Drawing.Point(0, 0);
             this.tvData.Margin = new System.Windows.Forms.Padding(6);
             this.tvData.Name = "tvData";
-            this.tvData.Size = new System.Drawing.Size(720, 1306);
+            this.tvData.Size = new System.Drawing.Size(720, 1265);
             this.tvData.TabIndex = 0;
             this.tvData.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvData_BeforeSelect);
             this.tvData.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvData_AfterSelect);
@@ -296,58 +297,60 @@
             this.toolStripMenuItem3,
             this.tsContextCopyName});
             this.csMenu.Name = "csMenu";
-            this.csMenu.Size = new System.Drawing.Size(271, 264);
+            this.csMenu.Size = new System.Drawing.Size(268, 226);
             // 
             // tsContextAdd
             // 
             this.tsContextAdd.Name = "tsContextAdd";
-            this.tsContextAdd.Size = new System.Drawing.Size(270, 36);
+            this.tsContextAdd.Size = new System.Drawing.Size(267, 36);
             this.tsContextAdd.Text = "Add";
             this.tsContextAdd.Click += new System.EventHandler(this.bAddString_Click);
             // 
             // tsContextDelete
             // 
             this.tsContextDelete.Name = "tsContextDelete";
-            this.tsContextDelete.Size = new System.Drawing.Size(270, 36);
+            this.tsContextDelete.Size = new System.Drawing.Size(267, 36);
             this.tsContextDelete.Text = "Delete";
             this.tsContextDelete.Click += new System.EventHandler(this.bDeleteString_Click);
             // 
             // tsContextDuplicate
             // 
             this.tsContextDuplicate.Name = "tsContextDuplicate";
-            this.tsContextDuplicate.Size = new System.Drawing.Size(270, 36);
+            this.tsContextDuplicate.Size = new System.Drawing.Size(267, 36);
             this.tsContextDuplicate.Text = "Duplicate";
             this.tsContextDuplicate.Click += new System.EventHandler(this.bDuplicateString_Click);
             // 
             // tsContextRename
             // 
             this.tsContextRename.Name = "tsContextRename";
-            this.tsContextRename.Size = new System.Drawing.Size(270, 36);
+            this.tsContextRename.Size = new System.Drawing.Size(267, 36);
             this.tsContextRename.Text = "Rename";
             this.tsContextRename.Click += new System.EventHandler(this.bStringRename_Click);
             // 
             // tsContextSort
             // 
             this.tsContextSort.Name = "tsContextSort";
-            this.tsContextSort.Size = new System.Drawing.Size(270, 36);
+            this.tsContextSort.Size = new System.Drawing.Size(267, 36);
             this.tsContextSort.Text = "Sort";
             this.tsContextSort.Click += new System.EventHandler(this.bStringsSort_Click);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(267, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(264, 6);
             // 
             // tsContextCopyName
             // 
             this.tsContextCopyName.Name = "tsContextCopyName";
             this.tsContextCopyName.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.tsContextCopyName.Size = new System.Drawing.Size(270, 36);
+            this.tsContextCopyName.Size = new System.Drawing.Size(267, 36);
             this.tsContextCopyName.Text = "Copy Name";
             this.tsContextCopyName.Click += new System.EventHandler(this.tsContextCopyName_Click);
             // 
             // pnlButtons
             // 
+            this.pnlButtons.Controls.Add(this.tbFilter);
+            this.pnlButtons.Controls.Add(this.label9);
             this.pnlButtons.Controls.Add(this.bStringsSort);
             this.pnlButtons.Controls.Add(this.bDuplicateString);
             this.pnlButtons.Controls.Add(this.bStringRename);
@@ -356,8 +359,26 @@
             this.pnlButtons.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlButtons.Location = new System.Drawing.Point(0, 0);
             this.pnlButtons.Name = "pnlButtons";
-            this.pnlButtons.Size = new System.Drawing.Size(720, 57);
+            this.pnlButtons.Size = new System.Drawing.Size(720, 98);
             this.pnlButtons.TabIndex = 1;
+            // 
+            // tbFilter
+            // 
+            this.tbFilter.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.tbFilter.Location = new System.Drawing.Point(142, 57);
+            this.tbFilter.Name = "tbFilter";
+            this.tbFilter.Size = new System.Drawing.Size(496, 29);
+            this.tbFilter.TabIndex = 15;
+            this.tbFilter.TextChanged += new System.EventHandler(this.tbFilter_TextChanged);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(12, 61);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(60, 25);
+            this.label9.TabIndex = 14;
+            this.label9.Text = "Filter:";
             // 
             // bStringsSort
             // 
@@ -457,7 +478,7 @@
             this.gbxContent.Margin = new System.Windows.Forms.Padding(6);
             this.gbxContent.Name = "gbxContent";
             this.gbxContent.Padding = new System.Windows.Forms.Padding(6);
-            this.gbxContent.Size = new System.Drawing.Size(1349, 1171);
+            this.gbxContent.Size = new System.Drawing.Size(1343, 1171);
             this.gbxContent.TabIndex = 5;
             this.gbxContent.TabStop = false;
             this.gbxContent.Text = "Content";
@@ -623,7 +644,7 @@
             this.tbContent.Multiline = true;
             this.tbContent.Name = "tbContent";
             this.tbContent.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbContent.Size = new System.Drawing.Size(1087, 946);
+            this.tbContent.Size = new System.Drawing.Size(1081, 946);
             this.tbContent.TabIndex = 3;
             this.tbContent.TextChanged += new System.EventHandler(this.tbContent_TextChanged);
             // 
@@ -678,7 +699,7 @@
             this.gbxGlobal.Margin = new System.Windows.Forms.Padding(6);
             this.gbxGlobal.Name = "gbxGlobal";
             this.gbxGlobal.Padding = new System.Windows.Forms.Padding(6);
-            this.gbxGlobal.Size = new System.Drawing.Size(1349, 153);
+            this.gbxGlobal.Size = new System.Drawing.Size(1343, 153);
             this.gbxGlobal.TabIndex = 4;
             this.gbxGlobal.TabStop = false;
             this.gbxGlobal.Text = "Global Data";
@@ -780,6 +801,7 @@
             this.pnlTree.ResumeLayout(false);
             this.csMenu.ResumeLayout(false);
             this.pnlButtons.ResumeLayout(false);
+            this.pnlButtons.PerformLayout();
             this.StatusStrip.ResumeLayout(false);
             this.StatusStrip.PerformLayout();
             this.gbxContent.ResumeLayout(false);
@@ -858,6 +880,8 @@
         private System.Windows.Forms.Button bSwitchAction;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem tsContextCopyName;
+        private System.Windows.Forms.TextBox tbFilter;
+        private System.Windows.Forms.Label label9;
     }
 }
 

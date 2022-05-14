@@ -354,12 +354,14 @@ namespace MSFSLocalizer
                 cbxLanguage.SelectedIndex = 0;
         }
 
-        private void BuildTree()
+        private void BuildTree(string filter = "")
         {
             tvData.Nodes.Clear();
             tvData.BeginUpdate();
             foreach (LocalizationString ls in locFile.Strings)
             {
+                if (filter.Length > 0 && !ls.Name.Contains(filter))
+                    continue;
                 TreeNode tn = tvData.Nodes.Add(ls.Name);
                 tn.Name = ls.Name;
                 tn.Tag = ls;
@@ -935,6 +937,11 @@ namespace MSFSLocalizer
             if (name.EndsWith("_TITLE"))
                 name = name.Remove(name.LastIndexOf("_TITLE"));
             Clipboard.SetText(name);
+        }
+
+        private void tbFilter_TextChanged(object sender, EventArgs e)
+        {
+            BuildTree(tbFilter.Text);
         }
     }
 }
