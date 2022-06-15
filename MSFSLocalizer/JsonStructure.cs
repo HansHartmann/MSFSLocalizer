@@ -139,12 +139,30 @@ namespace MSFSLocalizer
                     strList.Add(ls.DeepClone());
 
                 // Check first, the header line, for languages
-                string[] fields = lines[0].Split(new char[] { ';' });
+                string[] fields = null;
+                char csvDelimiter = ' ';
+
+                // Determine delimiter from header line
+                foreach (char delim in new char[] { ';', ',' })
+                {
+                    string[] splitResult = lines[0].Split(new char[] { delim });
+                    if (splitResult.Length == 3)
+                    {
+                        fields = splitResult;
+                        csvDelimiter = delim;
+                        break;
+                    }
+                }
+                if (fields == null) {
+                    MessageBox.Show(string.Format("'{0}' has invalid CSV header! Import process cancelled!", Path.GetFileName(aFileName)), "Import from CSV", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+
                 string selLang = fields[2];
 
                 for (int i = 1; i < lines.Count; i++)
                 {
-                    fields = lines[i].Split(new char[] { ';' });
+                    fields = lines[i].Split(new char[] { csvDelimiter });
                     string name = fields[0];
                     string trans = fields[2];
                     name = RemoveQuotes(name);
