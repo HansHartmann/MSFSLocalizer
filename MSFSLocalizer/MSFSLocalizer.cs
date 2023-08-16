@@ -311,6 +311,8 @@ namespace MSFSLocalizer
                 json += "}" + CR; // End Strings
                 json += "}" + CR; // End LocalisationFile
                 json += "}" + CR; // End outer bracket
+                json = WebUtility.HtmlDecode(json);
+
 
                 using (StreamWriter sw = new StreamWriter(config.LastProject))
                 {
