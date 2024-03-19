@@ -22,8 +22,9 @@ namespace MSFSLocalizer
 
         public LocalizationFile()
         {
-            Version = "";
-            UUID = "";
+            Version = "2";
+            Guid g = Guid.NewGuid();
+            UUID = g.ToString();
             Languages = new List<string>();
             Strings = new List<LocalizationString>();
         }
